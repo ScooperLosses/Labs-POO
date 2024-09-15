@@ -1,0 +1,46 @@
+package Lab_0;
+
+public class Book {
+    private String author;
+    private String title;
+    private long ISBN;
+
+    // Setteri si getteri
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public long getISBN() {
+        return ISBN;
+    }
+
+    public void setISBN(long ISBN) {
+        this.ISBN = ISBN;
+    }
+
+    // Lego Constructor
+    public Book(String author, String title, long ISBN){
+        this.author = author;
+        this.title = title;
+        this.ISBN = ISBN;
+    }
+
+
+    // Din Object in String pentru printare
+    @Override
+    public String toString() {
+        return "Author: " + getAuthor() + "\nTitle: " + getTitle() + "\nISBN: " + getISBN();
+    }
+}
