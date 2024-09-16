@@ -164,7 +164,7 @@
                 }
                 default -> System.out.println("Error: Optiunea este invalida. ");
             }
-        }while(userInput != 0);
+        }while(true);
     }
 }
 
