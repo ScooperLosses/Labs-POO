@@ -138,29 +138,33 @@
     // ------------
     
     package Lab_0;
-    
+
     import java.util.Scanner;
-    
+
     public class Main {
-        public static void main(String[] args) {
-            Library library = new Library();
-            Scanner sc = new Scanner(System.in);
-            int userInput;
-    
-            do {
-                System.out.println("\nAlegeti optiunea: ");
-                System.out.println("1. Adaugarea cartii");
-                System.out.println("2. Stergerea cartii");
-                System.out.println("3. Printarea bibliotecii\n");
-    
-                userInput = sc.nextInt();
-    
-                switch (userInput) {
-                    case 1 -> library.addElement();
-                    case 2 -> library.deleteElement();
-                    case 3 -> library.printAllElements();
-                    default -> System.out.println("Error: Optiunea este invalida. ");
+    public static void main(String[] args) {
+        Library library = new Library();
+        Scanner sc = new Scanner(System.in);
+        int userInput;
+
+        do {
+            System.out.println("\nAlegeti optiunea: ");
+            System.out.println("1. Adaugarea cartii");
+            System.out.println("2. Stergerea cartii");
+            System.out.println("3. Printarea bibliotecii\n");
+
+            userInput = sc.nextInt();
+
+            switch (userInput) {
+                case 1 -> library.addElement();
+                case 2 -> library.deleteElement();
+                case 3 -> library.printAllElements();
+                case 0 ->{
+                    return;
                 }
-            }while(userInput != 0);
-        }
+                default -> System.out.println("Error: Optiunea este invalida. ");
+            }
+        }while(userInput != 0);
     }
+}
+
