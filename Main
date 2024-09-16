@@ -20,6 +20,9 @@ public class Main {
                 case 1 -> library.addElement();
                 case 2 -> library.deleteElement();
                 case 3 -> library.printAllElements();
+                case 0 ->{
+                    return;
+                }
                 default -> System.out.println("Error: Optiunea este invalida. ");
             }
         }while(userInput != 0);
