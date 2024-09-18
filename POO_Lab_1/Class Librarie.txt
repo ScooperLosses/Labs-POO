@@ -1,0 +1,55 @@
+package Lab_0;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Library implements LibraryInterface{
+    Scanner sc = new Scanner(System.in);
+    ArrayList<Book> libraryQueue = new ArrayList<>();
+
+    // 1.Adaugam cartea
+    @Override
+    public void addElement() {
+        Book objectBook = new Book("Autor", "Titlul", 0);
+
+        System.out.println("Introduceti numele autorului: ");
+        String userAuthor = sc.nextLine();
+        objectBook.setAuthor(userAuthor);
+
+        System.out.println("Introduceti titlul: ");
+        String userTitle = sc.nextLine();
+        objectBook.setTitle(userTitle);
+
+        System.out.println("Introduceti ISBN: ");
+        long userISBN = sc.nextLong();
+        objectBook.setISBN(userISBN);
+        sc.nextLine();
+
+        libraryQueue.add(objectBook);
+
+        System.out.println("Succes: Cartea a fost adaugata.");
+    }
+
+
+    // 2.Stergeam cartea
+    @Override
+    public void deleteElement() {
+        libraryQueue.remove(0);
+        System.out.println("Succes: Cartea a fost stearsa.");
+    }
+
+
+    // 3.Printam toata biblioteca
+    @Override
+    public void printAllElements() {
+        if(libraryQueue.size() == 0){
+            System.out.println("\nError: Biblioteca este goala.\n");
+        }
+
+        int bookCount = 1;
+        for(Book item : libraryQueue){
+            System.out.println("\nCartea nr:" + bookCount);
+            System.out.println(item);
+            bookCount++;
+        }
+    }
+}

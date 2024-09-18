@@ -1,0 +1,7 @@
+package Lab_0;
+
+public interface LibraryInterface {
+    void addElement();
+    void deleteElement();
+    void printAllElements();
+}
