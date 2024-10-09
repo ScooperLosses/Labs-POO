@@ -1,0 +1,280 @@
+package Lab_1;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class University implements Serializable {
+    private final Logger logger = new Logger();
+    @Serial
+    private static final long serialVersionUID = 1L;
+    Scanner sc = new Scanner(System.in);
+    private ArrayList<Faculty> facultiesList;
+
+
+    // Setteri si getteri
+    public void setFaculties(ArrayList<Faculty> facultiesList) {
+        this.facultiesList = facultiesList;
+    }
+    public ArrayList<Faculty> getFaculties() {
+        return facultiesList;
+    }
+
+
+    // Constructor
+    public University() {
+        this.facultiesList = new ArrayList<>();
+    }
+
+
+    // Functii de aprobare datelor
+    private Faculty findFaculty(String facultyName) {
+        for (Faculty faculty : facultiesList) {
+            if (faculty.getFacultyName().equalsIgnoreCase(facultyName)) {
+                return faculty;
+            }
+        }
+        return null;
+    }
+    private Student findStudentByID(int studentID) {
+        for (Faculty faculty : facultiesList) {
+            for (Student student : faculty.getStudentList()) {
+                if (student.getID() == studentID) {
+                    return student;
+                }
+            }
+        }
+        return null;
+    }
+    private Faculty findFacultyByStudent(Student student) {
+        for (Faculty faculty : facultiesList) {
+            if (faculty.getStudentList().contains(student)) {
+                return faculty;
+            }
+        }
+        return null;
+    }
+    public boolean checkID(int studentID) {
+        for (Faculty faculty : facultiesList) {
+            for (Student student : faculty.getStudentList()) {
+                if (student.getID() == studentID) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public void createStudent(String studentName, String facultyName) {
+        Faculty targetFaculty = findFaculty(facultyName);
+
+        if (targetFaculty != null) {
+            Student newStudent = new Student(studentName);
+            targetFaculty.addStudent(newStudent);
+            System.out.println("Succes: Studentul " + studentName + " a fost inmatriculat in facultatea " + facultyName);
+        } else {
+            System.out.println("Error: Facultatea " + facultyName + " nu a fost gasita.");
+        }
+    }
+
+
+    /*
+      ---Оperatiile principale a faculatii
+    */
+
+    // 1. Creare si registrarea studentului
+    public void createAndAssignToFaculty() {
+        Student student = new Student("Numele", 0);
+
+        System.out.println("Numele: ");
+        String name = sc.nextLine();
+        student.setStudentName(name);
+
+        System.out.println("\nID: ");
+        int ID = sc.nextInt();
+        if (checkID(ID)) {
+            System.out.println("Error: ID e ocupat");
+            return;
+        }
+        student.setID(ID);
+        sc.nextLine();
+
+        System.out.println("Facultatea: ");
+        String facultyName = sc.nextLine();
+
+        Faculty faculty = findFaculty(facultyName);
+        if (faculty != null) {
+            faculty.addStudent(student);
+            System.out.println("Succes: Studentul a fost creat si inmatriculat in facultate.");
+            logger.log("A fost creat studentul: " + name + " in facultatea: " + faculty);
+        } else {
+            System.out.println("Error: Facultatea nu a fost gasita.");
+        }
+    }
+
+    // 2. Absolvirea studentului
+    public void gradStudent() {
+        System.out.println("Introduceti ID studentului");
+        int studentID = sc.nextInt();
+
+        Student student = findStudentByID(studentID);
+        if (student == null) {
+            System.out.println("Error: Studentul nu a fost gasit");
+            return;
+        }
+
+        Faculty faculty = findFacultyByStudent(student);
+        if (faculty != null) {
+            faculty.graduateStudent(student);
+            System.out.println("Studentul: " + student.getStudentName() + " a devenit absolvent.");
+            logger.log("Studentul: " + student.getStudentName() + "a devenit absolvent");
+        } else {
+            System.out.println("Error: Facultatea nu a fost gasita");
+        }
+    }
+
+    // 3. Printare studentilor
+    public void printStudents() {
+        for (Faculty faculty : facultiesList) {
+            System.out.println("Facultatea: " + faculty.getFacultyName());
+            for (Student student : faculty.getStudentList()) {
+                System.out.println("Studentul: " + student.getStudentName() + ", ID: " + student.getID());
+            }
+        }
+    }
+
+    // 4. Printarea studentilor absolventi
+    public void printGraduatedStudents() {
+        for (Faculty faculty : facultiesList) {
+            System.out.println("Facultatea: " + faculty.getFacultyName());
+            for (Student student : faculty.getGraduatedStudentList()) {
+                System.out.println("Studentul: " + student.getStudentName() + ", ID: " + student.getID());
+            }
+        }
+    }
+
+    // 5. Metoda pentru a cauta facultatea dupa ID studentului
+    public void findFacultyByID() {
+        System.out.println("Introduceti ID studentului:");
+        int studentID = sc.nextInt();
+        sc.nextLine();
+
+        boolean found = false;
+
+        for (Faculty faculty : facultiesList) {
+            for (Student student : faculty.getStudentList()) {
+                if (student.getID() == studentID) {
+                    System.out.println("Student: " + student.getStudentName() + " принадлежит факультету: " + faculty.getFacultyName());
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Error: Studentul cu ID " + studentID + " nu fost gasit");
+        }
+    }
+
+    // 6. Crearea facultatii
+    public void createFaculty() {
+        System.out.println("Denumirea Facultatii: ");
+        String name = sc.nextLine();
+
+        System.out.println("Domeniul Facultatii: ");
+        String field = sc.nextLine();
+
+        Faculty existingFaculty = findFaculty(name);
+        if (existingFaculty != null) {
+            System.out.println("Error: Asa facultate deja este");
+            return;
+        }
+
+        Faculty faculty = new Faculty(name, field);
+        facultiesList.add(faculty);
+        System.out.println("Succes: Facultate a fost creata cu succes");
+        logger.log("A fost creata facultatea: " + faculty.getFacultyName());
+    }
+
+    // 7. Printare facultatiilor
+    public void printFaculties() {
+        System.out.println("Lista facultatiilor");
+        for(Faculty faculty : facultiesList){
+            System.out.println("Facultatea: " + faculty.getFacultyName() + ", Domeniu: " + faculty.getField());
+        }
+    }
+
+    // 8. Printare facultatiilor dupa domeniu
+    public void printFacultyByField() {
+        System.out.println("Introduceti denumirea domeniului: ");
+        String fieldInput = sc.nextLine();
+
+        System.out.println("Facultatea in domeniu: " + fieldInput);
+        boolean found = false;
+
+        for (Faculty faculty : facultiesList) {
+            if (faculty.getField().equalsIgnoreCase(fieldInput)) {
+                System.out.println("Facultate: " + faculty.getFacultyName());
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Nu au fost gasite facultati in domeniu " + fieldInput);
+        }
+    }
+
+    //9. Citirea din file lista a studentilor
+    public void batchStudents(String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                String studentName = data[0];
+                String facultyName = data[1];
+
+                createStudent(studentName, facultyName);
+                logger.log("Studentul: " + studentName + " a fost introdus in: " + facultyName);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //10. Citirea din file lista studentilor absolbenti
+    public void batchGraduateStudents(String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String studentName = line.trim();
+                boolean found = false;
+
+                System.out.println("Absolvim studentul: " + studentName);
+
+                for (Faculty faculty : facultiesList) {
+                    System.out.println("Controlam facultatea: " + faculty.getFacultyName());
+                    for (Student student : faculty.getStudentList()) {
+                        System.out.println("Controlam studentul: " + student.getStudentName());
+                        if (student.getStudentName().equals(studentName)) {
+                            faculty.graduateStudent(student);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) {
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    logger.log("Studentul " + studentName + " nu este gasit.");
+                    System.out.println("Studentul " + studentName + " nu este gasit.");
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Erroare la cititre file: " + e.getMessage());
+        }
+    }
+}

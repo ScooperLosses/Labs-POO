@@ -1,0 +1,75 @@
+package Lab_1;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        University UTM = new University();
+        SaveManager saveManager = new SaveManager();
+
+        ArrayList<Faculty> loadedFacultyList = saveManager.loadData();
+        if(loadedFacultyList != null){
+            UTM.setFaculties(loadedFacultyList);
+        }
+
+        int userInput;
+        do {
+            System.out.println("\nOperatiile Facultatilor: ");
+            System.out.println("1. Creare studentului si inmatricularea in facultate");
+            System.out.println("2. Absolvim studentul");
+            System.out.println("3. Printeaza lista studentilor");
+            System.out.println("4. Printeaza lista studentilor absolviti");
+            System.out.println("5. Controlam daca studentul e in faculcate");
+
+            System.out.println("\nOperatii Generale");
+            System.out.println("6. Crearea Facultatii");
+            System.out.println("7. Printeaza lista tuturor facultatiilor");
+            System.out.println("8. Printeaza facultatile dupa domeniu");
+
+            System.out.println("9. Batchroll studentii din fisier");
+            System.out.println("10. Batchroll studentii absolventi din fisier");
+            System.out.println("0. Esire\n");
+            userInput = sc.nextInt();
+
+            switch (userInput) {
+                case 1-> {
+                    UTM.createAndAssignToFaculty();
+                    saveManager.saveData(UTM.getFaculties());
+                }
+
+                case 2-> {
+                    UTM.gradStudent();
+                    saveManager.saveData(UTM.getFaculties());
+                }
+
+                case 3-> UTM.printStudents();
+                case 4-> UTM.printGraduatedStudents();
+                case 5-> UTM.findFacultyByID();
+
+                case 6-> {
+                    UTM.createFaculty();
+                    saveManager.saveData(UTM.getFaculties());
+                }
+                case 7-> UTM.printFaculties();
+                case 8-> UTM.printFacultyByField();
+
+                case 9->{
+                    final String path = "D:\\Lab2DataSaver\\Students.txt";
+                    UTM.batchStudents(path);
+                }
+
+                case 10->{
+                    final String path = "D:\\Lab2DataSaver\\GradStudents.txt";
+                    UTM.batchGraduateStudents(path);
+                }
+
+                case 0->{
+                    saveManager.saveData(UTM.getFaculties());
+                    return;
+                }
+            }
+        }while(true);
+    }
+}

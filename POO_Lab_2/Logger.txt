@@ -1,0 +1,21 @@
+package Lab_1;
+
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+
+public class Logger {
+    private static final String LOG_FILE = "D:\\Lab2DataSaver\\operations.log";
+
+    // Metoda logger pentru a inscrie actiunile utilizatorului
+    public void log(String message){
+        try(FileWriter fileWriter = new FileWriter(LOG_FILE, true);
+            PrintWriter out = new PrintWriter(fileWriter)) {
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+            out.println(timestamp + " - " + message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

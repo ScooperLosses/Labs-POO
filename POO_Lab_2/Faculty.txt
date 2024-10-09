@@ -1,0 +1,64 @@
+package Lab_1;
+
+import java.io.*;
+import java.util.ArrayList;
+
+public class Faculty implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+    final private String facultyName;
+    private final String field;
+    private final ArrayList<Student> studentList;
+    private final ArrayList<Student> graduatedStudentList;
+
+    // Constructor
+    public Faculty(String facultyName, String field) {
+        this.facultyName = facultyName;
+        this.field = field;
+        this.graduatedStudentList = new ArrayList<>();
+        this.studentList = new ArrayList<>();
+    }
+
+
+    // Setteri si getter
+    public String getFacultyName() {
+        return facultyName;
+    }
+    public String getField() {
+        return field;
+    }
+    public ArrayList<Student> getStudentList() {
+        return studentList;
+    }
+    public ArrayList<Student> getGraduatedStudentList() {
+        return graduatedStudentList;
+    }
+
+
+    /*
+       ----Metodele clasei Faculty----
+    */
+
+    // 1. Adaugam studentul in facultate
+    public void addStudent(Student student) {
+        studentList.add(student);
+    }
+
+    // 2. Absolvire studentului
+    public void graduateStudent(Student student) {
+        if (!student.isGraduated()) {
+            student.setGraduated(true);
+            studentList.remove(student);
+            graduatedStudentList.add(student);
+            System.out.println("Succes: Studentul " + student.getStudentName() + " a devenit absolvent.");
+        } else {
+            System.out.println("Error: Studentul " + student.getStudentName() + " deja e absolvent.");
+        }
+    }
+
+    // 3. Printare facultate
+    @Override
+    public String toString() {
+        return "Facultatea: " + facultyName + ", Domeniu: " + field;
+    }
+}

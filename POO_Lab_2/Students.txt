@@ -1,0 +1,55 @@
+package Lab_1;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Student implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private String studentName;
+    private int ID;
+    private boolean graduated;
+
+
+    // Setteri si getteri
+    public String getStudentName() {
+        return studentName;
+    }
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+    public boolean isGraduated() {
+        return graduated;
+    }
+    public void setGraduated(boolean graduated) {
+        this.graduated = graduated;
+    }
+    public int getID() {
+        return ID;
+    }
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+
+    //Constructor
+    public Student(String studentName, int ID) {
+        this.studentName = studentName;
+        this.ID = ID;
+        this.graduated = false;
+    }
+    public Student(String studentName) {
+        this.studentName = studentName;
+    }
+
+
+    // Metoda pentru printare
+    @Override
+    public String toString() {
+        return "Student{" +
+                "studentName='" + studentName + '\'' +
+                ", ID=" + ID +
+                ", graduated=" + graduated +
+                '}';
+    }
+}
