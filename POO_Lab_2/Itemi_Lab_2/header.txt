@@ -1,0 +1,317 @@
+/*
+   ---- Itemii Lab 2
+*/
+
+// 1. Operator Overloading
+class Studentus {
+private:
+    string Name;
+    int Credits;
+
+public:
+    Studentus(string name = "Unknown", int credits = 0) : Name(name), Credits(credits) {}
+
+    string getName() const {
+        return Name;
+    }
+
+    int getCredits() const {
+        return Credits;
+    }
+
+    Studentus& operator++() {
+        ++Credits;
+        return *this;
+    }
+
+    Studentus& operator--() {
+        --Credits;
+        return *this;
+    }
+
+    Studentus operator++(int) {
+        Studentus temp = *this;
+        ++Credits;
+        return temp;
+    }
+
+    Studentus operator--(int) {
+        Studentus temp = *this;
+        --Credits;
+        return temp;
+    }
+
+    Studentus operator+(const Studentus& other) const {
+        return Studentus(this->Name, this->Credits + other.Credits);
+    }
+
+    Studentus& operator+=(const Studentus& other) {
+        this->Credits += other.Credits;
+        return *this;
+    }
+
+    void printInfo() const {
+        cout << "Numele studentului: " << Name << ", Credite: " << Credits << endl;
+    }
+};
+
+
+// 2. Single Inheritance
+class Person {
+protected:
+    string name;
+    int age;
+
+public:
+    Person(string name, int age)
+        : name(name), age(age){}
+};
+
+class Student : public Person {
+protected:
+    int studentID;
+    string faculty;
+
+public:
+    Student(string name, int age, int studentID, string faculty)
+        : Person(name, age), studentID(studentID), faculty(faculty){}
+};
+
+
+// 2.1 Multiple Inheritance
+
+class Employee {
+protected:
+    int salary;
+    string job;
+
+public:
+    Employee(int salary, string job)
+        : salary(salary), job(job){}
+};
+
+class StudentEmployee: public Student, public Employee{
+private:
+    int freeTime;
+
+public:
+    StudentEmployee(string name, int age, int studentID, string faculty, int salary, string job, int freeTime)
+        : Student(name, age, studentID, faculty), Employee(salary, job), freeTime(freeTime) {}
+
+    void printInfo() {
+        cout << name <<"," << age <<"," << studentID <<"," << faculty <<"," << salary <<"," << job <<"," << freeTime << endl;
+    }
+};
+
+
+// 3. Pure Virtual Functions and Abstract Classes
+
+class Person1 {
+protected:
+    string name;
+
+public:
+    Person1(string name) : name(name){}
+
+    virtual string getRole() = 0;
+
+    virtual ~Person1() {}
+};
+
+class Student1 : public Person1 {
+public:
+    Student1(string name) : Person1 (name){}
+
+    string getRole() override {
+        return "Student";
+    }
+};
+
+class Teacher : public Person1 {
+public:
+    Teacher(string name) : Person1 (name){}
+
+    string getRole() override {
+        return "Teacher";
+    }
+};
+
+class Administrator : public Person1 {
+public:
+    Administrator(string name) : Person1 (name){}
+
+    string getRole() override {
+        return "Administrator";
+    }
+};
+
+
+// 4. Polimorfism
+
+void printGetRole(Person1* pers) {
+    if (pers) {
+        cout << pers->getRole() << endl;
+    }
+}
+
+
+// 5.1 Agregatia
+
+class Student2 {
+private:
+    string name;
+
+public:
+    Student2(const string& name) : name(name) {}
+
+    string getName() const {
+        return name;
+    }
+};
+
+class Faculty {
+private:
+    string facultyName;
+    vector<Student2*> students; 
+
+public:
+    Faculty(const string& name) : facultyName(name) {}
+
+    void addStudent(Student2* student2) {
+        students.push_back(student2);
+    }
+
+    void showStudents() const {
+        cout << "Facultatea: " << facultyName << " are urmatorii studenti:" << endl;
+        for (const auto& student : students) {
+            cout << "- " << student->getName() << endl;
+        }
+    }
+};
+
+
+// 5.2 Compozitia
+
+class Book {
+private:
+    string title;
+
+public:
+    Book(const string& title) : title(title) {}
+
+    string getTitle() const {
+        return title;
+    }
+};
+
+class Library {
+private:
+    vector<Book> books; 
+
+public:
+    void addBook(const Book& book) {
+        books.push_back(book);
+    }
+
+    void showBooks() const {
+        cout << "Books in the library:" << endl;
+        for (const auto& book : books) {
+            cout << "- " << book.getTitle() << endl;
+        }
+    }
+};
+
+
+// 6. Polymorphic Logging System
+class OperationLogger {
+public:
+    virtual void log(const std::string& message) = 0;
+
+    virtual ~OperationLogger() {}
+};
+
+class FileLogger : public OperationLogger {
+private:
+    std::string filename;
+
+public:
+    FileLogger(const std::string& fname) : filename(fname) {}
+
+    void log(const std::string& message) override {
+        std::ofstream file(filename, std::ios::app);
+        if (file.is_open()) {
+            file << message << std::endl;
+            file.close();
+        }
+        else {
+            std::cerr << "Error: File nu a fost deschis" << std::endl;
+        }
+    }
+};
+
+class ConsoleLogger : public OperationLogger {
+public:
+    void log(const std::string& message) override {
+        std::cout << message << std::endl;
+    }
+};
+
+
+// 7. Advanced Error Handling with Custom Exceptions
+
+class StudentNotFoundException : public std::exception {
+public:
+    const char* what() const noexcept override {
+        return "Studentul a fost gasit!";
+    }
+};
+class InvalidFacultyOperation : public std::exception {
+public:
+    const char* what() const noexcept override {
+        return "Operatie incorecya";
+    }
+};
+
+class Student3 {
+private:
+    std::string name;
+
+public:
+    Student3(const std::string& name) : name(name) {}
+
+    std::string getName() const {
+        return name;
+    }
+};
+
+class Faculty1 {
+private:
+    std::string facultyName;
+    std::vector<Student3> students;
+
+public:
+    Faculty1(const std::string& name) : facultyName(name) {}
+
+    void addStudent(const Student3& student) {
+        students.push_back(student);
+    }
+
+    void removeStudent(const std::string& name) {
+        auto it = std::remove_if(students.begin(), students.end(),
+            [&](const Student3& s) { return s.getName() == name; });
+        if (it == students.end()) {
+            throw StudentNotFoundException();
+        }
+        students.erase(it, students.end());
+    }
+
+    void showStudents() const {
+        if (students.empty()) {
+            throw InvalidFacultyOperation();
+        }
+        std::cout << "Facultatea: " << facultyName << " detine urmatorii studenti:" << std::endl;
+        for (const auto& student : students) {
+            std::cout << "- " << student.getName() << std::endl;
+        }
+    }
+};

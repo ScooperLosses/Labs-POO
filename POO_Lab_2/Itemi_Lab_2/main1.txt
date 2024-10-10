@@ -1,0 +1,86 @@
+    /*
+        ---- Itemii Lab 2
+    */
+
+    
+    // 1. Operator Overloading
+    cout << "\nLab 2\n" << endl;
+    cout << "Itemul 1\n" << endl;
+    Studentus s1("Anton", 30);
+    Studentus s2("Eduardinio", 20);
+
+    ++s1; 
+    --s2;  
+
+    s1.printInfo();
+    s2.printInfo();
+
+    Studentus s3 = s1 + s2;  
+    s3.printInfo();
+
+    s2 += s1;  
+    s2.printInfo();
+
+
+    // 2. Single and Multiple Inheritance
+    cout << "\nItemul 2\n" << endl;
+    StudentEmployee se1("Anton", 21, 11111, "IT", 20000, "DevOps", 10);
+    se1.printInfo();
+
+
+    // 3. Pure Virtual Functions and Abstract Classes
+    cout << "\nItemul 3\n" << endl;
+    Student1 student1("anton");
+    Teacher teacher1("antonina");
+    Administrator admin1("antonio");
+    cout << student1.getRole() << teacher1.getRole()<< admin1.getRole()<< endl;
+
+     
+    // 4. Polymorphism
+    cout << "\nItemul 4\n" << endl;
+    printGetRole(&student1);
+    printGetRole(&teacher1);
+    printGetRole(&admin1);
+
+
+    // 5. Relationships between Classes: Aggregation and Composition
+    cout << "\nItemul 4\n" << endl;
+
+
+    // 6. Polymorphic Logging System
+    OperationLogger* consoleLogger = new ConsoleLogger();
+    OperationLogger* fileLogger = new FileLogger("D:/Lab2DataSaver/LoggerC++/log.txt");
+
+    consoleLogger->log("Mesaj pentru consola.");
+    fileLogger->log("Mesaj pentru file.");
+
+    delete consoleLogger;
+    delete fileLogger;
+
+
+    // 7. Advanced Error Handling with Custom Exceptions
+    try {
+        Faculty1 faculty("IT"); 
+
+        faculty.addStudent(Student3("Ivan"));
+        faculty.addStudent(Student3("Petea"));
+
+        faculty.showStudents();
+
+        faculty.removeStudent("Sasha");  
+
+    }
+    catch (const StudentNotFoundException& e) {
+        std::cerr << "error: " << e.what() << std::endl;
+    }
+    catch (const InvalidFacultyOperation& e) {
+        std::cerr << "error: " << e.what() << std::endl;
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Erroare neasteptat: " << e.what() << std::endl;
+    }
+
+
+    return 0;
+}
+
