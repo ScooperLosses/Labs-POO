@@ -1,0 +1,26 @@
+   // 1.  Paradigme de programare. Concepte de bază ale programării orientate obiect:
+   cout << "\nlab 1\n" << endl;
+   cout << "\nItemul 1\n" << endl;
+   Om om1("Numele", 20);
+   om1.setName("Anton");
+   cout << om1.getName() << endl;
+
+   // 2. Elemente ale limbajului C++ din perspectiva implementării principiilor POO:
+   cout << "\nItemul 2\n" << endl;
+   Animal animal("Animal");
+   animal.getName();
+   animal.makeSound(); 
+
+   Dog dog("goodboy");
+   dog.getName();      
+   dog.makeSound();    
+   
+   // 3. Clase. Constructori și destructori. Apelul constructorilor:
+   cout << "\nItemul 3\n" << endl;
+   Dog1 dog1("Buddy");
+
+   // 4. Funcții și clase friend. Clase friend:
+   ClassA objA("Hello from A");
+   ClassB objB("Hello from B");
+
+   showDataFromA(objA);

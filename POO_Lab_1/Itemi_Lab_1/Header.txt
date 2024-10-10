@@ -1,0 +1,110 @@
+/*
+   ---- Itemii Lab 1
+*/
+
+
+// 1.  Paradigme de programare. Concepte de bază ale programării orientate obiect:
+class Om {
+private:
+    string name;
+    int age;
+
+public:
+    Om(string name, int age) : name(name), age(age){}
+
+    void setName(const string& newName) {
+        name = newName;
+    }
+
+    string getName() const{
+        return name;
+    }
+};
+
+
+// 2. Elemente ale limbajului C++ din perspectiva implementării principiilor POO:
+class Animal {
+protected:
+    string name;
+
+public:
+    Animal(string name) : name(name) {}
+
+    void getName() const {
+        cout << "Numele animalului: " << name << endl;
+    }
+
+    virtual void makeSound() const {
+        cout << "Animalul face sunet." << endl;
+    }
+};
+
+class Dog : public Animal {
+public:
+    Dog(string name) : Animal(name) {}
+
+    void makeSound() const override {
+        cout << "Dog barks!" << endl;
+    }
+};
+
+
+//3. Clase. Constructori și destructori. Apelul constructorilor:
+class Animal1 {
+protected:
+    string name;
+
+public:
+    Animal1(string name) : name(name) {
+        cout << "Constructor Animal: " << name << " creat." << endl;
+    }
+
+    virtual ~Animal1() {
+        cout << "Destructor Animal: " << name << " distrus." << endl;
+    }
+};
+
+class Dog1 : public Animal1 {
+public:
+    Dog1(string name) : Animal1(name) {
+        cout << "Constructor Dog: " << name << " creat." << endl;
+    }
+
+    ~Dog1() {
+        cout << "Destructor Dog: " << name << " distrus." << endl;
+    }
+};
+
+
+// 4. Funcții și clase friend. Clase friend:
+class ClassB;
+
+class ClassA {
+private:
+    string dataA;
+
+public:
+    ClassA(const string& data) : dataA(data) {}
+
+    friend void showDataFromA(const ClassA& a);
+    friend void showDataFromB(const ClassB& b);
+};
+
+class ClassB {
+private:
+    string dataB;
+
+public:
+    ClassB(const string& data) : dataB(data) {}
+
+    friend void showDataFromA(const ClassA& a);
+    friend void showDataFromB(const ClassB& b);
+};
+
+void showDataFromA(const ClassA& a) {
+    cout << "Info din ClasaA: " << a.dataA << endl;
+}
+
+void showDataFromB(const ClassB& b) {
+    cout << "Info din ClasaB: " << b.dataB << endl;
+}
