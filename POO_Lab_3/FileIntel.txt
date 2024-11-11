@@ -1,0 +1,32 @@
+package Lab_2;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+
+public abstract class FileIntel {
+    protected String filename;
+    protected String extension;
+    protected long creationDate;
+    protected long lastModifiedDate;
+    protected Path filePath;
+
+    public FileIntel(Path file) throws IOException {
+        this.filePath = file.toAbsolutePath();
+        this.filename = filePath.getFileName().toString();
+        this.extension = getFileExtension(filename);
+        this.creationDate = Files.readAttributes(filePath, BasicFileAttributes.class).creationTime().toMillis();
+        this.lastModifiedDate = Files.getLastModifiedTime(filePath).toMillis();
+    }
+
+    private String getFileExtension(String filename) {
+        int index = filename.lastIndexOf('.');
+        if (index > 0) {
+            return filename.substring(index + 1);
+        }
+        return "";
+    }
+
+    public abstract void printInfo();
+}

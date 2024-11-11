@@ -1,0 +1,30 @@
+package Lab_2;
+
+import java.nio.file.*;
+import java.io.IOException;
+import java.awt.Image;
+import javax.imageio.ImageIO;
+
+public class ImageIntel extends FileIntel {
+    public ImageIntel(Path file) throws IOException {
+        super(file);
+    }
+
+    @Override
+    public void printInfo() {
+        System.out.println("Filename: " + filename);
+        System.out.println("Extension: " + extension);
+        java.util.Date date = new java.util.Date(creationDate);
+        System.out.println("Created: " + date);
+        java.util.Date lastModDate = new java.util.Date(lastModifiedDate);
+        System.out.println("Last Modified: " + lastModDate + "\n");
+
+        try {
+            Image image = ImageIO.read(Files.newInputStream(Paths.get(filename)));
+            System.out.println("Image dimensions: " + image.getWidth(null) + "x" + image.getHeight(null));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+

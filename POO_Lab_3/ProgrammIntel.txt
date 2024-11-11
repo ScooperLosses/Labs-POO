@@ -1,0 +1,38 @@
+package Lab_2;
+
+import java.nio.file.*;
+import java.io.IOException;
+import java.nio.file.Files;
+
+public class ProgramIntel extends FileIntel {
+    public ProgramIntel(Path file) throws IOException {
+        super(file);
+    }
+
+    @Override
+    public void printInfo() {
+        System.out.println("Filename: " + filename);
+        System.out.println("Extension: " + extension);
+        java.util.Date date = new java.util.Date(creationDate);
+        System.out.println("Created: " + date);
+        java.util.Date lastModDate = new java.util.Date(lastModifiedDate);
+        System.out.println("Last Modified: " + lastModDate);
+
+        try {
+            long lineCount = Files.lines(Paths.get(filename)).count();
+            long classCount = Files.lines(Paths.get(filename))
+                    .filter(line -> line.contains("class"))
+                    .count();
+            long methodCount = Files.lines(Paths.get(filename))
+                    .filter(line -> line.contains("def") || line.contains("public") || line.contains("void"))
+                    .count();
+
+            System.out.println("Line Count: " + lineCount);
+            System.out.println("Class Count: " + classCount);
+            System.out.println("Method Count: " + methodCount);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+

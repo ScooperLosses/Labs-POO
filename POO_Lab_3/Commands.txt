@@ -1,0 +1,107 @@
+package Lab_2;
+
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+public class Commands {
+    public static final String directoryPath = "D:\\Lab3OOP";
+    public static Set<String> lastSnapshotFiles = new HashSet<>();
+
+
+    // 1. Comanda - commit
+    static public void commitFunction() throws IOException {
+        Set<String> currentFiles = new HashSet<>();
+
+        Files.walkFileTree(Paths.get(directoryPath), new SimpleFileVisitor<>() {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+                currentFiles.add(file.getFileName().toString());
+                return FileVisitResult.CONTINUE;
+            }
+        });
+
+        Set<String> newFiles = new HashSet<>(currentFiles);
+        newFiles.removeAll(lastSnapshotFiles);
+
+        Set<String> deletedFiles = new HashSet<>(lastSnapshotFiles);
+        deletedFiles.removeAll(currentFiles);
+
+        if(newFiles.isEmpty()){
+            System.out.println("No new file added");
+        }else{
+            System.out.println("New files: " + newFiles);
+
+        }
+
+        if(deletedFiles.isEmpty()){
+            System.out.println("No old file deleted\n");
+        }else{
+            System.out.println("Deleted files: " + deletedFiles + "\n");
+        }
+        lastSnapshotFiles = currentFiles;
+    }
+
+
+    // 2. Comanda - info
+    static public void infoFunction(Map<String, FileIntel> files) {
+        try {
+            Files.walkFileTree(Paths.get(directoryPath), new SimpleFileVisitor<>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    FileIntel fileInfo = null;
+
+                    if (file.toString().endsWith(".txt")) {
+                        fileInfo = new TextIntel(file);
+                    } else if (file.toString().endsWith(".png") || file.toString().endsWith(".jpg")) {
+                        fileInfo = new ImageIntel(file);
+                    } else if (file.toString().endsWith(".java") || file.toString().endsWith(".py") || file.toString().endsWith(".cpp")) {
+                        fileInfo = new ProgramIntel(file);
+                    }
+
+                    if (fileInfo != null) {
+                        files.put(file.getFileName().toString(), fileInfo);
+                        fileInfo.printInfo();
+                    }
+
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // 3. Comanda - status
+    static public void statusFunction() {
+        Set<String> currentFiles = new HashSet<>();
+        try {
+            Files.walkFileTree(Paths.get(directoryPath), new SimpleFileVisitor<>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+                    currentFiles.add(file.getFileName().toString());
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+
+            for (String currentFile : currentFiles) {
+                if (!lastSnapshotFiles.contains(currentFile)) {
+                    System.out.println(currentFile + " is a new file");
+                }
+            }
+
+            for (String lastFile : lastSnapshotFiles) {
+                if (!currentFiles.contains(lastFile)) {
+                    System.out.println(lastFile + " was deleted since the last snapshot");
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

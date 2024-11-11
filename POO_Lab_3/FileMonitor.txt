@@ -1,0 +1,19 @@
+package Lab_2;
+
+import java.io.IOException;
+import java.util.concurrent.*;
+
+public class FileMonitor {
+    public static void main(String[] args) {
+        try (ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor()) {
+
+            executorService.scheduleAtFixedRate(() -> {
+                try {
+                    Commands.commitFunction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }, 0, 5, TimeUnit.SECONDS);
+        }
+    }
+}
