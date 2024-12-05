@@ -1,0 +1,33 @@
+package Lab_2;
+
+import java.nio.file.*;
+import java.io.IOException;
+import java.util.List;
+
+public class TextIntel extends FileIntel {
+
+    public TextIntel(Path file) throws IOException {
+        super(file);
+    }
+
+    @Override
+    public void printInfo() {
+        System.out.println("\n--Filename: " + filename);
+        System.out.println("Extension: " + extension);
+        java.util.Date date = new java.util.Date(creationDate);
+        System.out.println("Created: " + date);
+        java.util.Date lastModDate = new java.util.Date(lastModifiedDate);
+        System.out.println("Last Modified: " + lastModDate);
+
+        System.out.println("Content: ");
+        try{
+            List<String> lines = Files.readAllLines(filePath);
+            for(String line : lines){
+                System.out.println(line);
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+}
