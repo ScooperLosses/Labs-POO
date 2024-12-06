@@ -1,0 +1,52 @@
+package Lab_3;
+
+import java.util.Random;
+
+public class Erbivor extends Animal {
+    public Erbivor(String name, int energy, Position position, int rateOfSurvability, int speed, String foodType) {
+        super(name, energy, position, rateOfSurvability, speed, foodType);
+    }
+
+    @Override
+    public void action() {
+        System.out.println(getName() + " cauta hrana.");
+    }
+
+    @Override
+    public void moving(Position position) {
+        Random random = new Random();
+        int randPos = random.nextInt(2);
+
+        if(getEnergy() >= 10){
+            if (randPos == 0) {
+                if (position.getX() >= 10) {
+                    position.setX(position.getX() - (getSpeed() - 5));
+                } else if (position.getX() < 0) {
+                    position.setX(position.getX() + (getSpeed() + 5));
+                } else {
+                    position.setX(position.getX() + getSpeed());
+                }
+            }
+
+            if (randPos == 1) {
+                if (position.getY() >= 10) {
+                    position.setY(position.getY() - (getSpeed() - 5));
+                } else if (position.getY() < 0) {
+                    position.setY(position.getY() + (getSpeed() - 5));
+                } else {
+                    position.setY(position.getY() + (getSpeed() - 5));
+                }
+            }
+            setEnergy(getEnergy() - 5);
+        } else{
+            System.out.println("Animalul " + getName() + " n-are energie pentru a se deplasa si se odihneste");
+            setEnergy(getEnergy() + 2);
+        }
+    }
+
+
+    @Override
+    public void eating(EntitateEcosystem food) {
+        System.out.println(getName() + " mananca pe " + food.getName());
+    }
+}

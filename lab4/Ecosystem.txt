@@ -1,0 +1,119 @@
+package Lab_3;
+
+
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+public class Ecosystem {
+    final private List<EntitateEcosystem> entities;
+
+    public Ecosystem() {
+        this.entities = new CopyOnWriteArrayList<>();
+    }
+
+    public void addEntity() {
+        entities.add(new Plante("Iarba", 100, new Position(1, 0), 100));
+
+        entities.add(new Plante("Lapusta", 70, new Position(4, 1), 100));
+
+        entities.add(new Erbivor("Iepure", 100, new Position(2, 0), 90, 3, "grass"));
+
+        entities.add(new Carnivor("Lup", 70, new Position(2, 1), 80, 2, "rabbit"));
+
+        entities.add(new Omnivor("Urs", 50, new Position(2, 2), 70, 1, "everything"));
+    }
+
+
+    public void action(Animal animal) {
+        CopyOnWriteArrayList<EntitateEcosystem> copyEntities = new CopyOnWriteArrayList<>(entities);
+
+        for (EntitateEcosystem entity : copyEntities) {
+            if (!animal.equals(entity) && animal.getPosition().equals(entity.getPosition())) {
+                if (entity instanceof Plante && animal instanceof Erbivor) {
+                    System.out.println(animal.getName() + " mananca " + entity.getName());
+                    animal.setEnergy(animal.getEnergy() + entity.getEnergy());
+                    break;
+                }
+                else if (entity instanceof Erbivor && animal instanceof Carnivor) {
+                    attackOrEat(animal, entity);
+                    break;
+                }
+                else if (entity instanceof Carnivor || entity instanceof Plante) {
+                    if (entity instanceof Carnivor) {
+                        attackOrEat(animal, entity);
+                        break;
+                    } else{
+                        System.out.println("Animalul " + animal.getName() + " manaca" + entity.getName());
+                        animal.setEnergy(animal.getEnergy() + entity.getEnergy());
+                    }
+                }
+                else if(entity instanceof Erbivor && animal instanceof Erbivor){
+                    System.out.println("Animale se reproduc");
+                    entities.add(new Erbivor("Junior Iepure", 100, new Position(2, 0), 90, 3, "grass"));
+                }
+            }
+        }
+    }
+
+    private void attackOrEat(Animal animal, EntitateEcosystem entity) {
+        if (entity.getRateOfSurvability() <= 0) {
+            System.out.println("Animalul " + entity.getName() + " a fost doborat");
+            animal.setEnergy(animal.getEnergy() + entity.getEnergy());
+            entities.remove(entity);
+        } else {
+            entity.setRateOfSurvability(entity.getRateOfSurvability() - 20);
+        }
+    }
+
+
+    public void startSimulation() {
+        addEntity();
+        int steps = 50;
+
+        for (int i = 0; i < steps; i++) {
+            System.out.println("Pasul: " + (i + 1));
+
+            for (EntitateEcosystem entity : entities) {
+                if (entity instanceof Animal animal) {
+                    randomShitGo(i);
+                    animal.moving(animal.getPosition());
+
+                    action(animal);
+                }
+            }
+
+            printState();
+        }
+    }
+
+
+    public void printState() {
+        System.out.println("--\nStatus--\n");
+        for (EntitateEcosystem entity : entities) {
+            System.out.println(entity);
+        }
+    }
+
+    public void printResult() {
+        System.out.println("\n--Rezultatul--\n");
+        for (EntitateEcosystem entity : entities) {
+            System.out.println(entity.getName() + " la pozitia: " + entity.getPosition());
+        }
+    }
+
+    public void randomShitGo(int i) {
+        Random random = new Random();
+        int randVar = random.nextInt(3); // 0, 1 или 2
+
+        if (randVar == 0 && i == 10) {
+            System.out.println("Se incepe furtuna!");
+        } else if (randVar == 1 && i == 20) {
+            System.out.println("Se incepe Seceta");
+        } else if (randVar == 2 && i == 30) {
+            System.out.println("A aparut o noua specie!");
+            entities.add(new Erbivor("Iepure de aur", 30, new Position(2, 0), 90, 3, "grass"));
+        }
+    }
+
+}

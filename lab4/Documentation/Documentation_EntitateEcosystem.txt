@@ -1,0 +1,108 @@
+package Lab_3;
+
+/**
+ * Clasa abstractă care reprezintă o entitate în ecosistem.
+ * Fiecare entitate are un nume, energie, o poziție pe hartă și o rată de supraviețuire.
+ * Această clasă servește ca bază pentru animalele, plantele și alte entități din ecosistem.
+ */
+public abstract class EntitateEcosystem {
+    private String name; // Numele entității
+    private int energy; // Energia entității
+    private Position position; // Poziția entității în ecosistem
+    private int rateOfSurvability; // Rata de supraviețuire a entității
+
+    /**
+     * Returnează numele entității.
+     *
+     * @return Numele entității.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Returnează valoarea energiei entității.
+     *
+     * @return Energia entității.
+     */
+    public int getEnergy() {
+        return energy;
+    }
+
+    /**
+     * Setează valoarea energiei entității.
+     *
+     * @param energy Energia pe care dorim să o setăm pentru entitate.
+     */
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    /**
+     * Returnează poziția entității în ecosistem.
+     *
+     * @return Poziția entității.
+     */
+    public Position getPosition() {
+        return position;
+    }
+
+    /**
+     * Setează poziția entității.
+     *
+     * @param position Poziția pe care dorim să o setăm pentru entitate.
+     */
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    /**
+     * Returnează rata de supraviețuire a entității.
+     *
+     * @return Rata de supraviețuire.
+     */
+    public int getRateOfSurvability() {
+        return rateOfSurvability;
+    }
+
+    /**
+     * Setează rata de supraviețuire a entității.
+     *
+     * @param rateOfSurvability Rata de supraviețuire pe care dorim să o setăm pentru entitate.
+     */
+    public void setRateOfSurvability(int rateOfSurvability) {
+        this.rateOfSurvability = rateOfSurvability;
+    }
+
+    /**
+     * Constructorul clasei EntitateEcosystem.
+     * Creează o entitate cu numele, energia, poziția și rata de supraviețuire specificate.
+     *
+     * @param name Numele entității.
+     * @param energy Energia entității.
+     * @param position Poziția entității în ecosistem.
+     * @param rateOfSurvability Rata de supraviețuire a entității.
+     */
+    public EntitateEcosystem(String name, int energy, Position position, int rateOfSurvability) {
+        this.name = name;
+        this.energy = energy;
+        this.position = position;
+        this.rateOfSurvability = rateOfSurvability;
+    }
+
+    /**
+     * Suprascrierea metodei toString pentru a returna o reprezentare sub formă de șir a obiectului EntitateEcosystem.
+     *
+     * @return Reprezentarea sub formă de șir a entității, care include numele, energia, poziția și rata de supraviețuire.
+     */
+    @Override
+    public String toString() {
+        return name + " [energy=" + energy + ", position =" + position + ", rate =" + rateOfSurvability + "]";
+    }
+
+    /**
+     * Metodă abstractă care trebuie implementată de subclase.
+     * Aceasta definește comportamentul entității în ecosistem.
+     */
+    public abstract void action();
+}

@@ -1,0 +1,23 @@
+package Lab_3;
+
+public abstract class Animal extends EntitateEcosystem {
+    protected int speed;
+    protected String foodType;
+
+    public Animal(String name, int energy, Position position, int rateOfSurvability, int speed, String foodType) {
+        super(name, energy, position, rateOfSurvability);
+        this.speed = speed;
+        this.foodType = foodType;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+
+    public abstract void moving(Position position);
+    public abstract void eating(EntitateEcosystem food);
+
+    @Override
+    public abstract void action();
+}

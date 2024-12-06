@@ -1,0 +1,83 @@
+package Lab_3;
+
+/**
+ * Clasa care reprezintă coordonatele pe un plan, folosind două numere întregi - X și Y.
+ * Această clasă este utilizată pentru a determina poziția obiectelor în ecosistem.
+ */
+public class Position {
+    private int x; // Coordonata X
+    private int y; // Coordonata Y
+
+    /**
+     * Constructorul clasei Position.
+     * Creează un obiect Position cu coordonatele date X și Y.
+     *
+     * @param x Coordonata pe axa X.
+     * @param y Coordonata pe axa Y.
+     */
+    public Position(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    /**
+     * Returnează valoarea coordonatei X.
+     *
+     * @return Valoarea coordonatei X.
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * Setează valoarea coordonatei X.
+     *
+     * @param x Valoarea pentru coordonata X.
+     */
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    /**
+     * Returnează valoarea coordonatei Y.
+     *
+     * @return Valoarea coordonatei Y.
+     */
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * Setează valoarea coordonatei Y.
+     *
+     * @param y Valoarea pentru coordonata Y.
+     */
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    /**
+     * Suprascrierea metodei equals pentru a compara două obiecte Position.
+     * Două obiecte Position sunt considerate egale dacă au aceleași coordonate X și Y.
+     *
+     * @param obj Obiectul cu care se compară.
+     * @return true dacă cele două obiecte sunt egale, false altfel.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Position position = (Position) obj;
+        return x == position.x && y == position.y;
+    }
+
+    /**
+     * Suprascrierea metodei toString pentru a returna o reprezentare sub formă de șir a obiectului Position.
+     *
+     * @return Reprezentarea sub formă de șir a coordonatelor, de exemplu "(x, y)".
+     */
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
+}

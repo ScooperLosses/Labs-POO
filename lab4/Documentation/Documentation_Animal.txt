@@ -1,0 +1,60 @@
+package Lab_3;
+
+/**
+ * Clasa abstractă care reprezintă un animal din ecosistem.
+ * Aceasta extinde clasa EntitateEcosystem și adaugă comportamente și caracteristici specifice animalelor,
+ * cum ar fi viteza și tipul de hrană.
+ */
+public abstract class Animal extends EntitateEcosystem {
+    protected int speed; // Viteza animalului
+    protected String foodType; // Tipul de hrană pe care o consumă animalul
+
+    /**
+     * Constructorul clasei Animal.
+     * Creează un animal cu numele, energia, poziția, rata de supraviețuire, viteza și tipul de hrană specificate.
+     *
+     * @param name Numele animalului.
+     * @param energy Energia animalului.
+     * @param position Poziția animalului în ecosistem.
+     * @param rateOfSurvability Rata de supraviețuire a animalului.
+     * @param speed Viteza animalului.
+     * @param foodType Tipul de hrană consumat de animal (de exemplu, carne sau plante).
+     */
+    public Animal(String name, int energy, Position position, int rateOfSurvability, int speed, String foodType) {
+        super(name, energy, position, rateOfSurvability);
+        this.speed = speed;
+        this.foodType = foodType;
+    }
+
+    /**
+     * Returnează viteza animalului.
+     *
+     * @return Viteza animalului.
+     */
+    public int getSpeed() {
+        return speed;
+    }
+
+    /**
+     * Metodă abstractă care definește comportamentul mișcării animalului.
+     * Aceasta va fi implementată în subclasele animalelor (de exemplu, pentru diferite tipuri de mișcare).
+     *
+     * @param position Noua poziție în care animalul se va mișca.
+     */
+    public abstract void moving(Position position);
+
+    /**
+     * Metodă abstractă care definește comportamentul animalului în privința hranei.
+     * Aceasta va fi implementată în subclasele animalelor (de exemplu, pentru diferite tipuri de hrană).
+     *
+     * @param food Entitatea de tipul EntitateEcosystem pe care animalul o consumă (poate fi o plantă sau un alt animal).
+     */
+    public abstract void eating(EntitateEcosystem food);
+
+    /**
+     * Metodă abstractă care definește comportamentul general al animalului în ecosistem.
+     * Aceasta va fi implementată în subclasele animalelor pentru a specifica ce acțiuni efectuează animalul.
+     */
+    @Override
+    public abstract void action();
+}

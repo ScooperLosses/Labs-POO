@@ -1,0 +1,50 @@
+package Lab_3;
+
+public abstract class EntitateEcosystem {
+    private String name;
+    private int energy;
+    private Position position;
+    private int rateOfSurvability;
+    public String getName() {
+        return name;
+    }
+
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public int getRateOfSurvability() {
+        return rateOfSurvability;
+    }
+
+    public void setRateOfSurvability(int rateOfSurvability) {
+        this.rateOfSurvability = rateOfSurvability;
+    }
+
+    public EntitateEcosystem(String name, int energy, Position position, int rateOfSurvability) {
+        this.name = name;
+        this.energy = energy;
+        this.position = position;
+        this.rateOfSurvability = rateOfSurvability;
+    }
+
+    @Override
+    public String toString() {
+        return name + " [energy=" + energy + ", position =" + position + ", rate =" + rateOfSurvability +"]";
+    }
+
+    public abstract void action();
+}

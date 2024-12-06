@@ -1,0 +1,86 @@
+package Lab_3;
+
+import java.util.Random;
+
+/**
+ * Clasa care reprezintă un carnivor din ecosistem.
+ * Aceasta extinde clasa Animal și implementează comportamente specifice carnivorelor,
+ * cum ar fi căutarea hranei, mișcarea și consumul de carne.
+ */
+public class Carnivor extends Animal {
+
+    /**
+     * Constructorul clasei Carnivor.
+     * Creează un carnivor cu numele, energia, poziția, rata de supraviețuire, viteza și tipul de hrană specificate.
+     *
+     * @param name Numele carnivorului.
+     * @param energy Energia carnivorului.
+     * @param position Poziția carnivorului în ecosistem.
+     * @param rateOfSurvability Rata de supraviețuire a carnivorului.
+     * @param speed Viteza carnivorului.
+     * @param foodType Tipul de hrană consumat de carnivor (în acest caz, carne).
+     */
+    public Carnivor(String name, int energy, Position position, int rateOfSurvability, int speed, String foodType) {
+        super(name, energy, position, rateOfSurvability, speed, foodType);
+    }
+
+    /**
+     * Comportamentul carnivorului când efectuează o acțiune.
+     * În acest caz, carnivorul caută hrană.
+     */
+    @Override
+    public void action() {
+        System.out.println(getName() + " cauta hrana.");
+    }
+
+    /**
+     * Comportamentul mișcării carnivorului.
+     * Carnivorul se mișcă aleatoriu pe axele X și Y, în funcție de energia sa.
+     * Dacă energia este suficientă, carnivorul se va deplasa într-o direcție aleatorie.
+     * Dacă energia este scăzută, carnivorul se odihnește și își recuperează energie.
+     *
+     * @param position Poziția curentă a carnivorului în ecosistem.
+     */
+    @Override
+    public void moving(Position position) {
+        Random random = new Random();
+        int randPos = random.nextInt(2); // Se alege aleatoriu direcția de mișcare (pe X sau Y)
+
+        if(getEnergy() >= 10) {
+            if (randPos == 0) { // Mișcare pe axa X
+                if (position.getX() >= 10) {
+                    position.setX(position.getX() - (getSpeed() - 1));
+                } else if (position.getX() < 0) {
+                    position.setX(position.getX() + (getSpeed() - 1));
+                } else {
+                    position.setX(position.getX() + (getSpeed() - 1));
+                }
+            }
+
+            if (randPos == 1) { // Mișcare pe axa Y
+                if (position.getY() >= 10) {
+                    position.setY(position.getY() - (getSpeed() - 1));
+                } else if (position.getY() < 0) {
+                    position.setY(position.getY() + (getSpeed() - 1));
+                } else {
+                    position.setY(position.getY() + (getSpeed() - 1));
+                }
+            }
+            setEnergy(getEnergy() - 5); // Energia se reduce după mișcare
+        } else {
+            System.out.println("Animalul " + getName() + " n-are energie pentru a se deplasa si se odihneste");
+            setEnergy(getEnergy() + 2); // Dacă energia este scăzută, carnivorul se odihnește și își recuperează puțin din energie
+        }
+    }
+
+    /**
+     * Comportamentul carnivorului atunci când mănâncă.
+     * Carnivorul mănâncă o entitate de tipul EntitateEcosystem care reprezintă hrană.
+     *
+     * @param food Entitatea de tipul EntitateEcosystem care este consumată de carnivor (în acest caz, animale sau alte entități care reprezintă hrană).
+     */
+    @Override
+    public void eating(EntitateEcosystem food) {
+        System.out.println(getName() + " mananca pe " + food.getName());
+    }
+}

@@ -1,0 +1,86 @@
+package Lab_3;
+
+import java.util.Random;
+
+/**
+ * Clasa care reprezintă un omnivor din ecosistem.
+ * Aceasta extinde clasa Animal și implementează comportamente specifice omnivorelor,
+ * cum ar fi căutarea hranei, mișcarea și consumul de alimente de diverse tipuri.
+ */
+public class Omnivor extends Animal {
+
+    /**
+     * Constructorul clasei Omnivor.
+     * Creează un omnivor cu numele, energia, poziția, rata de supraviețuire, viteza și tipul de hrană specificate.
+     *
+     * @param name Numele omnivorului.
+     * @param energy Energia omnivorului.
+     * @param position Poziția omnivorului în ecosistem.
+     * @param rateOfSurvability Rata de supraviețuire a omnivorului.
+     * @param speed Viteza omnivorului.
+     * @param foodType Tipul de hrană consumat de omnivor (în acest caz, atât plante cât și carne).
+     */
+    public Omnivor(String name, int energy, Position position, int rateOfSurvability, int speed, String foodType) {
+        super(name, energy, position, rateOfSurvability, speed, foodType);
+    }
+
+    /**
+     * Comportamentul omnivorului când efectuează o acțiune.
+     * În acest caz, omnivorul caută hrană.
+     */
+    @Override
+    public void action() {
+        System.out.println(getName() + " cauta hrana.");
+    }
+
+    /**
+     * Comportamentul mișcării omnivorului.
+     * Omnivorul se mișcă aleatoriu pe axele X și Y, în funcție de energia sa.
+     * Dacă energia este suficientă, omnivorul se va deplasa într-o direcție aleatorie.
+     * Dacă energia este scăzută, omnivorul se odihnește și își recuperează energie.
+     *
+     * @param position Poziția curentă a omnivorului în ecosistem.
+     */
+    @Override
+    public void moving(Position position) {
+        Random random = new Random();
+        int randPos = random.nextInt(2); // Se alege aleatoriu direcția de mișcare (pe X sau Y)
+
+        if(getEnergy() >= 10) {
+            if (randPos == 0) { // Mișcare pe axa X
+                if (position.getX() >= 10) {
+                    position.setX(position.getX() - getSpeed());
+                } else if (position.getX() < 0) {
+                    position.setX(position.getX() + getSpeed());
+                } else {
+                    position.setX(position.getX() + getSpeed());
+                }
+            }
+
+            if (randPos == 1) { // Mișcare pe axa Y
+                if (position.getY() >= 10) {
+                    position.setY(position.getY() - getSpeed());
+                } else if (position.getY() < 0) {
+                    position.setY(position.getY() + getSpeed());
+                } else {
+                    position.setY(position.getY() + getSpeed());
+                }
+            }
+            setEnergy(getEnergy() - 5); // Energia se reduce după mișcare
+        } else {
+            System.out.println("Animalul " + getName() + " n-are energie pentru a se deplasa si se odihneste");
+            setEnergy(getEnergy() + 2); // Dacă energia este scăzută, omnivorul se odihnește și își recuperează puțin din energie
+        }
+    }
+
+    /**
+     * Comportamentul omnivorului atunci când mănâncă.
+     * Omnivorul poate consuma orice entitate de tipul EntitateEcosystem, atât plante cât și animale.
+     *
+     * @param food Entitatea de tipul EntitateEcosystem care este consumată de omnivor (poate fi plantă sau animal).
+     */
+    @Override
+    public void eating(EntitateEcosystem food) {
+        System.out.println(getName() + " ест " + food.getName());
+    }
+}

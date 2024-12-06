@@ -1,0 +1,86 @@
+package Lab_3;
+
+import java.util.Random;
+
+/**
+ * Clasa care reprezintă un erbivor din ecosistem.
+ * Aceasta extinde clasa Animal și implementează comportamente specifice erbivorelor,
+ * cum ar fi căutarea hranei, mișcarea și consumul de plante.
+ */
+public class Erbivor extends Animal {
+
+    /**
+     * Constructorul clasei Erbivor.
+     * Creează un erbivor cu numele, energia, poziția, rata de supraviețuire, viteza și tipul de hrană specificate.
+     *
+     * @param name Numele erbivorului.
+     * @param energy Energia erbivorului.
+     * @param position Poziția erbivorului în ecosistem.
+     * @param rateOfSurvability Rata de supraviețuire a erbivorului.
+     * @param speed Viteza erbivorului.
+     * @param foodType Tipul de hrană consumat de erbivor (în acest caz, plante).
+     */
+    public Erbivor(String name, int energy, Position position, int rateOfSurvability, int speed, String foodType) {
+        super(name, energy, position, rateOfSurvability, speed, foodType);
+    }
+
+    /**
+     * Comportamentul erbivorului când efectuează o acțiune.
+     * În acest caz, erbivorul caută hrană.
+     */
+    @Override
+    public void action() {
+        System.out.println(getName() + " cauta hrana.");
+    }
+
+    /**
+     * Comportamentul mișcării erbivorului.
+     * Erbivorul se mișcă aleatoriu pe axele X și Y, în funcție de energia sa.
+     * Dacă energia este suficientă, erbivorul se va deplasa într-o direcție aleatorie.
+     * Dacă energia este scăzută, erbivorul se odihnește și își recuperează energie.
+     *
+     * @param position Poziția curentă a erbivorului în ecosistem.
+     */
+    @Override
+    public void moving(Position position) {
+        Random random = new Random();
+        int randPos = random.nextInt(2); // Se alege aleatoriu direcția de mișcare (pe X sau Y)
+
+        if(getEnergy() >= 10) {
+            if (randPos == 0) { // Mișcare pe axa X
+                if (position.getX() >= 10) {
+                    position.setX(position.getX() - (getSpeed() - 5));
+                } else if (position.getX() < 0) {
+                    position.setX(position.getX() + (getSpeed() + 5));
+                } else {
+                    position.setX(position.getX() + getSpeed());
+                }
+            }
+
+            if (randPos == 1) { // Mișcare pe axa Y
+                if (position.getY() >= 10) {
+                    position.setY(position.getY() - (getSpeed() - 5));
+                } else if (position.getY() < 0) {
+                    position.setY(position.getY() + (getSpeed() - 5));
+                } else {
+                    position.setY(position.getY() + (getSpeed() - 5));
+                }
+            }
+            setEnergy(getEnergy() - 5); // Energia se reduce după mișcare
+        } else {
+            System.out.println("Animalul " + getName() + " n-are energie pentru a se deplasa si se odihneste");
+            setEnergy(getEnergy() + 2); // Dacă energia este scăzută, erbivorul se odihnește și își recuperează puțin din energie
+        }
+    }
+
+    /**
+     * Comportamentul erbivorului atunci când mănâncă.
+     * Erbivorul mănâncă o plantă sau o entitate de tipul EntitateEcosystem care reprezintă hrană.
+     *
+     * @param food Entitatea de tipul EntitateEcosystem care este consumată de erbivor (în acest caz, plante).
+     */
+    @Override
+    public void eating(EntitateEcosystem food) {
+        System.out.println(getName() + " mananca pe " + food.getName());
+    }
+}
